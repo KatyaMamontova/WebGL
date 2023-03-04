@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>three.js Primitives</title>
-  		<link rel="stylesheet" href="main.css">
-	</head>
-	<body>
-		<canvas class="screen"></canvas>
 
-		<script src="tree.js"></script>
-		<script src="main.js"></script>
-	</body>
+<head>
+	<meta charset="utf-8">
+	<title>three.js Primitives</title>
+	<link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+	<canvas class="screen"></canvas>
+	<div class="materialInputContainer">
+		<input type="radio" class="materialInputs" name="materials" id="inputPhong" value="phong" checked>
+		<label for="inputPhong">phong </label><br>
+		<input type="radio" class="materialInputs" name="materials" id="inputLambert" value="lambert">
+		<label for="inputLambert">lambert</label><br>
+		<input type="radio" class="materialInputs" name="materials" id="inputBasic" value="basic">
+		<label for="inputBasic">basic</label><br>
+		<input type="radio" class="materialInputs" name="materials" id="inputToon" value="toon">
+		<label for="inputToon">toon</label><br>
+		<input type="radio" class="materialInputs" name="materials" id="inputStandard" value="standard">
+		<label for="inputStandard">standard</label><br>
+		<input type="radio" class="materialInputs" name="materials" id="inputPhysical" value="physical">
+		<label for="inputPhysical">physical</label><br>
+	</div>
+	<script src="tree.js"></script>
+	<script src="main.js"></script>
+
+</body>
+
 </html>

@@ -1,5 +1,6 @@
 function main() {
   const canvas = document.querySelector('.screen');
+  const materialInputs = document.querySelectorAll('.materialInputs');
   const renderer = new THREE.WebGLRenderer({ canvas });
 
   const fov = 100;
@@ -19,9 +20,65 @@ function main() {
     scene.add(light);
   }
 
-  function makeInstance(geometry, color, x, y = 0, rotation = false) {
+  console.log(materialInputs)
+  let material = setMaterial('phong', '#44aa88')
+  materialInputs.forEach(input => input.addEventListener('click', elem => material = setMaterial(elem.target.value, '#44aa88')))
 
-    const material = new THREE.MeshLambertMaterial({ color, side: THREE.DoubleSide });
+  function setMaterial(name, color) {
+    switch (name) {
+      case 'phong':
+        console.log('phong')
+        return new THREE.MeshPhongMaterial({
+          color: color,
+          side: THREE.DoubleSide,
+          shininess: 100
+        });
+      case 'lambert':
+        return new THREE.MeshLambertMaterial({
+          color: color,
+          side: THREE.DoubleSide
+        });
+      case 'basic':
+        return new THREE.MeshBasicMaterial({
+          color: color,
+          side: THREE.DoubleSide
+        });
+      case 'toon':
+        console.log('toon')
+        return new THREE.MeshToonMaterial({
+          color: color,
+          side: THREE.DoubleSide,
+          emissive: '#555555'
+        });
+      case 'standard':
+        return new THREE.MeshStandardMaterial({
+          color: color,
+          side: THREE.DoubleSide,
+          roughness: 0.4,
+          refractionRatio: 1.5,
+          metalness: 0.6,
+          transparent: true,
+          //thickness: 9.9,
+          opacity: 0.5
+        });
+      case 'physical':
+        return new THREE.MeshPhysicalMaterial({
+          color: '#44aa88',
+          side: THREE.DoubleSide,
+          roughness: 0.4,
+          thickness: 2.9,
+          ior: 2.9,
+          metalness: 0.6,
+          transparent: true,
+          opacity: 0.5,
+          reflectivity: 2.9
+        });
+    }
+  }
+
+  function makeInstance(geometry, material, x, y = 0, rotation = false) {
+
+    //const material = new THREE.MeshLambertMaterial({ color, side: THREE.DoubleSide });
 
     const figure = new THREE.Mesh(geometry, material);
     scene.add(figure);
@@ -67,11 +124,8 @@ function main() {
       case 'plane':
         const width = 4;
         height = 2;
-        widthSegments = 10;
-        heightSegments = 10;
         return new THREE.PlaneGeometry(
-          width, height,
-          widthSegments, heightSegments);
+          width, height);
     }
   }
 
@@ -86,12 +140,12 @@ function main() {
     }
     return needResize;
   }
+/* 
 
-
-  makeInstance(setGeometry('torus'), 0xff49cc, -1);
-  makeInstance(setGeometry('cylinder'), 0xddff66, 0);
-  makeInstance(setGeometry('sphere'), 0xff8f00, 1);
-  makeInstance(setGeometry('plane'), 0x77bbff, 0, -0.5, true);
+  makeInstance(setGeometry('torus'), material, -1);
+  makeInstance(setGeometry('cylinder'), material, 0);
+  makeInstance(setGeometry('sphere'), material, 1);
+  makeInstance(setGeometry('plane'), material, 0, -0.5, true); */
 
   function render(time) {
     time *= 0.001;
@@ -102,7 +156,13 @@ function main() {
       camera.updateProjectionMatrix();
     }
 
+
     renderer.render(scene, camera);
+
+    makeInstance(setGeometry('torus'), material, -1);
+    makeInstance(setGeometry('cylinder'), material, 0);
+    makeInstance(setGeometry('sphere'), material, 1);
+    makeInstance(setGeometry('plane'), material, 0, -0.5, true);
 
     requestAnimationFrame(render);
   }
