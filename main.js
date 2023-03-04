@@ -21,8 +21,8 @@ function main() {
   }
 
   console.log(materialInputs)
-  let material = setMaterial('phong', '#44aa88')
-  materialInputs.forEach(input => input.addEventListener('click', elem => material = setMaterial(elem.target.value, '#44aa88')))
+  let materialName = 'phong'
+  materialInputs.forEach(input => input.addEventListener('click', event => materialName = event.target.value))
 
   function setMaterial(name, color) {
     switch (name) {
@@ -30,30 +30,25 @@ function main() {
         console.log('phong')
         return new THREE.MeshPhongMaterial({
           color: color,
-          side: THREE.DoubleSide,
           shininess: 100
         });
       case 'lambert':
         return new THREE.MeshLambertMaterial({
-          color: color,
-          side: THREE.DoubleSide
+          color: color
         });
       case 'basic':
         return new THREE.MeshBasicMaterial({
-          color: color,
-          side: THREE.DoubleSide
+          color: color
         });
       case 'toon':
         console.log('toon')
         return new THREE.MeshToonMaterial({
           color: color,
-          side: THREE.DoubleSide,
           emissive: '#555555'
         });
       case 'standard':
         return new THREE.MeshStandardMaterial({
           color: color,
-          side: THREE.DoubleSide,
           roughness: 0.4,
           refractionRatio: 1.5,
           metalness: 0.6,
@@ -63,8 +58,7 @@ function main() {
         });
       case 'physical':
         return new THREE.MeshPhysicalMaterial({
-          color: '#44aa88',
-          side: THREE.DoubleSide,
+          color: color,
           roughness: 0.4,
           thickness: 2.9,
           ior: 2.9,
@@ -79,7 +73,7 @@ function main() {
   function makeInstance(geometry, material, x, y = 0, rotation = false) {
 
     //const material = new THREE.MeshLambertMaterial({ color, side: THREE.DoubleSide });
-
+    
     const figure = new THREE.Mesh(geometry, material);
     scene.add(figure);
 
@@ -140,12 +134,12 @@ function main() {
     }
     return needResize;
   }
-/* 
 
-  makeInstance(setGeometry('torus'), material, -1);
-  makeInstance(setGeometry('cylinder'), material, 0);
-  makeInstance(setGeometry('sphere'), material, 1);
-  makeInstance(setGeometry('plane'), material, 0, -0.5, true); */
+
+  makeInstance(setGeometry('torus'), setMaterial(materialName, 0xff49cc), -1);
+  makeInstance(setGeometry('cylinder'), setMaterial(materialName, 0xddff66), 0);
+  makeInstance(setGeometry('sphere'), setMaterial(materialName, 0xff8f00), 1);
+  makeInstance(setGeometry('plane'), setMaterial(materialName, 0x77bbff), 0, -0.5, true);
 
   function render(time) {
     time *= 0.001;
@@ -158,11 +152,6 @@ function main() {
 
 
     renderer.render(scene, camera);
-
-    makeInstance(setGeometry('torus'), material, -1);
-    makeInstance(setGeometry('cylinder'), material, 0);
-    makeInstance(setGeometry('sphere'), material, 1);
-    makeInstance(setGeometry('plane'), material, 0, -0.5, true);
 
     requestAnimationFrame(render);
   }
